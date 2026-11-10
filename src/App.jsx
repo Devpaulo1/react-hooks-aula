@@ -1,122 +1,54 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useContext } from 'react';
+import { NavLink, Route, Routes } from 'react-router';
+import { ThemeContext } from './context/ThemeContext.jsx';
+import Home from './pages/Home.jsx';
+import Ex01Titulo from './pages/Ex01Titulo.jsx';
+import Ex02Resize from './pages/Ex02Resize.jsx';
+import Ex03Context from './pages/Ex03Context.jsx';
+import Ex04Counter from './pages/Ex04Counter.jsx';
+import Ex05Favoritos from './pages/Ex05Favoritos.jsx';
 
-function App() {
-  const [count, setCount] = useState(0)
+const paginas = [
+  { caminho: '/', rotulo: 'Início' },
+  { caminho: '/exercicio-1', rotulo: '01 · Effect: título' },
+  { caminho: '/exercicio-2', rotulo: '02 · Effect: resize' },
+  { caminho: '/exercicio-3', rotulo: '03 · Context API' },
+  { caminho: '/exercicio-4', rotulo: '04 · Custom Hook' },
+  { caminho: '/exercicio-5', rotulo: '05 · Integração' },
+];
+
+export default function App() {
+  // Consome o tema global disponibilizado em main.jsx.
+  const { tema } = useContext(ThemeContext);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className={`layout ${tema === 'escuro' ? 'dark' : ''}`}>
+      <aside className="sidebar">
+        <div className="brand">⚛ Laboratório React</div>
+        <p>5 exercícios demonstrativos</p>
 
-      <div className="ticks"></div>
+        <nav aria-label="Exercícios">
+          {paginas.map((pagina) => (
+            // NavLink aplica a classe active à rota atual.
+            <NavLink key={pagina.caminho} to={pagina.caminho} end>
+              {pagina.rotulo}
+            </NavLink>
+          ))}
+        </nav>
+      </aside>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <main className="content">
+        {/* A URL decide qual página será renderizada. */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/exercicio-1" element={<Ex01Titulo />} />
+          <Route path="/exercicio-2" element={<Ex02Resize />} />
+          <Route path="/exercicio-3" element={<Ex03Context />} />
+          <Route path="/exercicio-4" element={<Ex04Counter />} />
+          <Route path="/exercicio-5" element={<Ex05Favoritos />} />
+          <Route path="*" element={<h2>Página não encontrada.</h2>} />
+        </Routes>
+      </main>
+    </div>
+  );
 }
-
-export default App
